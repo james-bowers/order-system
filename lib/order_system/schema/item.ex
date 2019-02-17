@@ -7,8 +7,6 @@ defmodule OrderSystem.Item do
   schema "item" do
     field(:available, :integer)
     belongs_to(:product, Product)
-
-    timestamps()
   end
 
   def changeset(item, attrs) do

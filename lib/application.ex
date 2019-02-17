@@ -5,6 +5,7 @@ defmodule OrderSystem.Application do
 
   def start(_type, _args) do
     children = [
+      OrderSystem.Repo,
       Plug.Adapters.Cowboy.child_spec(
         scheme: :http,
         plug: OrderSystemWeb.Router,

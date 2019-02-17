@@ -27,7 +27,6 @@ use Mix.Config
 # Configuration from the imported file will override the ones defined
 # here (which is why it is important to import them last).
 #
-# import_config "#{Mix.env()}.exs"
 
 config :order_system, OrderSystem.Repo, migration_primary_key: [name: :id, type: :binary_id]
 
@@ -35,9 +34,4 @@ config :order_system,
   ecto_repos: [OrderSystem.Repo],
   generators: [binary_id: true]
 
-config :order_system, OrderSystem.Repo,
-  database: "order_system_repo",
-  username: "postgres",
-  password: "pass",
-  hostname: "localhost",
-  pool: Ecto.Adapters.SQL.Sandbox
+import_config "#{Mix.env()}.exs"
