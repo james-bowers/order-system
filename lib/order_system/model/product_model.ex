@@ -2,9 +2,10 @@ defmodule OrderSystem.ProductModel do
   import Ecto.Query, warn: false
   alias OrderSystem.{Repo, Product, ItemModel}
 
-  def create_product(%{quantity: quantity, title: title, amount: amount}) do
+  def create_product(%{quantity: quantity, title: title, amount: amount} = params)
+      when is_binary(title) and is_integer(amount) do
     Repo.transaction(fn ->
-      attrs = %{title: title, amount: amount}
+      attrs = Map.take(params, [:title, :amount])
 
       product =
         %Product{}

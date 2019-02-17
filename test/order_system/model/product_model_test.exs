@@ -9,6 +9,7 @@ defmodule Test.OrderSystem.ProductModel do
   test "create_product!/1 with valid data creates a product with items" do
     {:ok, {product_id, @quantity}} = ProductModel.create_product(@valid_attrs)
 
-    assert [{ItemModel.available(), @quantity}] == ItemModel.get_quantity(product_id, :remaining)
+    assert %{ItemModel.unavailable() => 0, ItemModel.available() => @quantity} ==
+             ItemModel.get_quantity(product_id)
   end
 end

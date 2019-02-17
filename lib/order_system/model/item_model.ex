@@ -13,7 +13,7 @@ defmodule OrderSystem.ItemModel do
     Repo.insert_all(Item, List.duplicate(item.changes, quantity))
   end
 
-  def get_quantity(product_id, :remaining) do
+  def get_quantity(product_id) do
     with {:ok, binary_product_id} <- Ecto.UUID.dump(product_id) do
       query =
         from(i in "item",
@@ -22,7 +22,7 @@ defmodule OrderSystem.ItemModel do
           select: {i.available, count()}
         )
 
-      Repo.all(query)
+      Enum.into(Repo.all(query), %{available() => 0, unavailable() => 0})
     end
   end
 end
