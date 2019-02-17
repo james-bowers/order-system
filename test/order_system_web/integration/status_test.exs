@@ -1,4 +1,4 @@
-defmodule OrderSystemWebTest do
+defmodule Test.OrderSystemWeb.Integration.Status do
   use ExUnit.Case
   use Plug.Test
 
