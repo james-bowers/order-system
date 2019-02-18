@@ -14,7 +14,7 @@ defmodule OrderSystem.ProductModel do
 
       {inserted_items, _} =
         ItemModel.create_items!(
-          %{product_id: product.id, available: ItemModel.available()},
+          %{product_id: product.id},
           quantity
         )
 

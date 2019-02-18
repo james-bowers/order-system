@@ -23,3 +23,5 @@ erl_crash.dump
 order_system-*.tar
 
 .elixir_ls
+
+.DS_Store
