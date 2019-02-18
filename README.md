@@ -2,7 +2,7 @@
 
 Manages inventory, and financial accounts.
 
-## Routes
+## Routes (work in progress)
 
 `POST /account`
 `GET /balance/:account_id`
