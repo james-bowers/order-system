@@ -4,12 +4,12 @@ workflow "Test & Check Formatting" {
 }
 
 action "Get Dependencies" {
-  uses = "jclem/actions/mix@master"
+  uses = "james-bowers/actions/mix@master"
   args = "deps.get"
 }
 
 action "Test" {
-  uses = "jclem/actions/mix@master"
+  uses = "james-bowers/actions/mix@master"
   needs = ["Get Dependencies"]
   args = "test"
   env = {
@@ -18,6 +18,6 @@ action "Test" {
 }
 
 action "Check Formatting" {
-  uses = "jclem/actions/mix@master"
+  uses = "james-bowers/actions/mix@master"
   args = "format --check-formatted"
 }
