@@ -5,8 +5,8 @@ defmodule Test.OrderSystem.OrderModel do
   alias OrderSystem.{OrderModel, ItemModel}
 
   test "registers an order" do
-    {product1_id, _} = Test.ProductFixture.product_fixture(%{quantity: 10})
-    {product2_id, _} = Test.ProductFixture.product_fixture(%{quantity: 15})
+    {product1_id, _} = Test.ProductFixture.create_product(%{quantity: 10})
+    {product2_id, _} = Test.ProductFixture.create_product(%{quantity: 15})
 
     order = %{
       items: [

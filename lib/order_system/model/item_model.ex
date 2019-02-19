@@ -20,7 +20,9 @@ defmodule OrderSystem.ItemModel do
 
   def reserve_items!(order) do
     order.items
-    |> Enum.each(fn item -> reserve_item!(order, item) end)
+    |> Enum.map(fn item -> reserve_item!(order, item) end)
+
+    order
   end
 
   defp reserve_item!(order, item) do
