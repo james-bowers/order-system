@@ -6,4 +6,8 @@ defmodule OrderSystem.TransferModel do
     |> Transfer.changeset(attrs)
     |> Repo.insert()
   end
+
+  def get_transfer!(id) do
+    Repo.get!(Transfer, id)
+  end
 end
