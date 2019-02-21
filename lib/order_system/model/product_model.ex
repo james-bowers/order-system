@@ -1,5 +1,4 @@
 defmodule OrderSystem.ProductModel do
-  import Ecto.Query, warn: false
   alias OrderSystem.{Repo, Product, ItemModel}
 
   def create_product(%{quantity: quantity, title: title, amount: amount} = params)
