@@ -17,4 +17,15 @@ defmodule Test.OrderSystem.AccountModel do
     assert {:error, changeset} = AccountModel.create_account(@invalid_attrs)
     assert "can't be blank" in errors_on(changeset).title
   end
+
+  test "retrieve products sold by account" do
+    results = AccountModel.retrieve_products_sold("7f68c8ee-882b-4512-bd73-a7c2147e5f77")
+
+    assert results == [
+             %{
+               title: "A seed data product title",
+               product_id: "8ea46125-3d93-4858-bd14-c0de1f1a26cb"
+             }
+           ]
+  end
 end
