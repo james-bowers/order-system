@@ -6,5 +6,6 @@ config :order_system, OrderSystem.Repo,
   database: "order_system_repo",
   username: "postgres",
   password: "pass",
-  hostname: "db",
+  # change hostname to db, when github actions supports `docker-compose run test`
+  hostname: "localhost",
   pool: Ecto.Adapters.SQL.Sandbox
