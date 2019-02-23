@@ -3,7 +3,7 @@ defmodule Test.ProductFixture do
 
   @default_product_attrs %{quantity: 50, title: "A great product title", amount: 3500}
 
-  def product_fixture(attrs \\ %{}) do
+  def create_product(attrs \\ %{}) do
     {:ok, product} =
       attrs
       |> Enum.into(@default_product_attrs)

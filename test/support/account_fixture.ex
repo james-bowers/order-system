@@ -3,7 +3,7 @@ defmodule Test.AccountFixture do
 
   @valid_attrs %{title: "a title for the account"}
 
-  def account_fixture(attrs \\ %{}) do
+  def create_account(attrs \\ %{}) do
     {:ok, account} =
       attrs
       |> Enum.into(@valid_attrs)

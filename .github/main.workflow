@@ -9,12 +9,8 @@ action "Get Dependencies" {
 }
 
 action "Test" {
-  uses = "james-bowers/actions/mix@master"
-  needs = ["Get Dependencies"]
-  args = "test"
-  env = {
-    MIX_ENV = "test"
-  }
+  uses = "james-bowers/actions/docker-compose@master"
+  args = "run test"
 }
 
 action "Check Formatting" {

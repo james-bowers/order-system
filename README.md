@@ -2,7 +2,12 @@
 
 Manages inventory, and financial accounts.
 
-## Routes
+## Tests:
+
+With docker & postgres: `docker-compose run test`
+Without docker (relies on local postgres running): `mix test`
+
+## Routes (work in progress)
 
 `POST /account`
 `GET /balance/:account_id`

@@ -2,10 +2,12 @@ defmodule OrderSystem.Product do
   use OrderSystem.BaseSchema
   import Ecto.Changeset
 
+  alias OrderSystem.{Item}
+
   schema "product" do
     field(:title, :string)
     field(:amount, :integer)
-
+    has_many(:item, Item)
     timestamps()
   end
 
