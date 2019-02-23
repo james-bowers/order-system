@@ -1,5 +1,5 @@
 defmodule OrderSystem.AccountModel do
-  import Ecto.Query, only: [from: 2]
+  use OrderSystem.Query
 
   alias OrderSystem.{Repo, Account}
 
@@ -11,7 +11,20 @@ defmodule OrderSystem.AccountModel do
     |> Repo.insert()
   end
 
-  def retrieve_products_sold(account_id) do
+  def transfer_history(account_id, page \\ 1, limit \\ 10) do
+    query =
+      from(a in Account,
+        where: a.id == ^account_id,
+        inner_join: t in assoc(a, :transfer),
+        select: %{amount: t.amount, transfered_at: t.inserted_at},
+        order_by: t.inserted_at
+      )
+      |> paginate(page, limit)
+
+    Repo.all(query)
+  end
+
+  def retrieve_products_sold(account_id, page \\ 1, limit \\ 10) do
     query =
       from(a in Account,
         where: a.id == ^account_id,
@@ -23,6 +36,7 @@ defmodule OrderSystem.AccountModel do
         select: %{title: p.title, product_id: p.id},
         group_by: p.id
       )
+      |> paginate(page, limit)
 
     Repo.all(query)
   end

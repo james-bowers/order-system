@@ -28,4 +28,14 @@ defmodule Test.OrderSystem.AccountModel do
              }
            ]
   end
+
+  test "an account's transfer history" do
+    transfer_history = AccountModel.transfer_history("eacb49e9-221e-488e-9e6d-a6fb529d5f4b")
+
+    assert transfer_history == [
+             %{amount: 1000, transfered_at: ~N[2019-02-22 16:59:38]},
+             %{amount: 3000, transfered_at: ~N[2019-02-22 16:59:39]},
+             %{amount: -2000, transfered_at: ~N[2019-02-22 16:59:40]}
+           ]
+  end
 end

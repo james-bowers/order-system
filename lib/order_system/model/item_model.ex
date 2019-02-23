@@ -1,5 +1,5 @@
 defmodule OrderSystem.ItemModel do
-  import Ecto.Query
+  use OrderSystem.Query
   alias OrderSystem.{Repo, Item}
 
   def create_items!(params \\ %{}, quantity) do

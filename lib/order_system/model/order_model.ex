@@ -1,6 +1,6 @@
 defmodule OrderSystem.OrderModel do
   alias OrderSystem.{Repo, Order, ItemModel}
-  import Ecto.Query, only: [from: 2]
+  use OrderSystem.Query
 
   def create_order(order) do
     Repo.transaction(fn ->

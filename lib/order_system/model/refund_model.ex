@@ -1,6 +1,6 @@
 defmodule OrderSystem.RefundModel do
   alias OrderSystem.{Repo, Refund, TransferModel}
-  import Ecto.Query, only: [from: 2]
+  use OrderSystem.Query
 
   def create_refund(%{order_id: _, amount: _, account_id: _} = attrs) do
     Repo.transaction(fn ->

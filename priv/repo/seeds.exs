@@ -119,16 +119,16 @@ OrderSystem.Repo.insert!(%OrderSystem.Transfer{
   account_id: account3_id,
   amount: 3000,
   id: transfer4_id,
-  inserted_at: ~N[2019-02-22 16:59:38],
-  updated_at: ~N[2019-02-22 16:59:38]
+  inserted_at: ~N[2019-02-22 16:59:39],
+  updated_at: ~N[2019-02-22 16:59:39]
 })
 
 OrderSystem.Repo.insert!(%OrderSystem.Transfer{
   account_id: account3_id,
   amount: -2000,
   id: transfer5_id,
-  inserted_at: ~N[2019-02-22 16:59:38],
-  updated_at: ~N[2019-02-22 16:59:38]
+  inserted_at: ~N[2019-02-22 16:59:40],
+  updated_at: ~N[2019-02-22 16:59:40]
 })
 
 ######################################################
