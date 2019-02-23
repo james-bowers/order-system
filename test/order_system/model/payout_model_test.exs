@@ -10,5 +10,6 @@ defmodule Test.OrderSystem.PayoutModel do
     {:ok, payout} = PayoutModel.create_payout(valid_attrs)
 
     assert TransferModel.get_transfer!(payout.transfer_id).amount == -5000
+    assert TransferModel.get_balance!(account1.id) == -5000
   end
 end

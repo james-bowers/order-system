@@ -1,5 +1,6 @@
 defmodule OrderSystem.ProductModel do
-  alias OrderSystem.{Repo, Product, ItemModel}
+  import Ecto.Query
+  alias OrderSystem.{Repo, Product, ItemModel, Item}
 
   def create_product(%{quantity: quantity, title: title, amount: amount} = params)
       when is_binary(title) and is_integer(amount) do
