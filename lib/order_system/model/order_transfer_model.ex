@@ -1,5 +1,5 @@
 defmodule OrderSystem.OrderTransferModel do
-  alias OrderSystem.{Repo, Transfer, OrderTransfer, TransferModel}
+  alias OrderSystem.{Repo, OrderTransfer, TransferModel}
 
   def create_order_transfer(attrs) do
     Repo.transaction(fn ->
@@ -9,7 +9,7 @@ defmodule OrderSystem.OrderTransferModel do
     end)
   end
 
-  defp add_order_id_to_each_transfer(attrs) do
+  defp add_order_id_to_each_transfer(%{transfer_to: _} = attrs) do
     attrs.transfer_to
     |> Enum.map(fn base_transfer -> Map.merge(base_transfer, %{order_id: attrs.order_id}) end)
   end
