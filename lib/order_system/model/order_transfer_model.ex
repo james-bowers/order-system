@@ -1,5 +1,5 @@
 defmodule OrderSystem.OrderTransferModel do
-  alias OrderSystem.{Repo, OrderTransfer, TransferModel}
+  alias OrderSystem.{Repo, Transfer, OrderTransfer, TransferModel}
 
   def create_order_transfer(attrs) do
     Repo.transaction(fn ->

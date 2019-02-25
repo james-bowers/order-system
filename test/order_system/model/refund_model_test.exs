@@ -2,7 +2,7 @@ defmodule Test.OrderSystem.RefundModel do
   use ExUnit.Case
   use Test.OrderSystem.DataCase
 
-  alias OrderSystem.{RefundModel, TransferModel}
+  alias OrderSystem.{RefundModel, TransferModel, Order}
 
   test "refund an order" do
     valid_attrs = %{
@@ -21,12 +21,15 @@ defmodule Test.OrderSystem.RefundModel do
 
   describe "retrieve refund history" do
     test "For an order with no refunds" do
-      refund_history = RefundModel.retrieve_refund_history("b03f40b3-5aa8-40f4-92c0-e0bf9d723c3c")
+      refund_history =
+        RefundModel.retrieve_refund_history(%Order{id: "b03f40b3-5aa8-40f4-92c0-e0bf9d723c3c"})
+
       assert refund_history == []
     end
 
     test "for an order with a refund" do
-      refund_history = RefundModel.retrieve_refund_history("1da3cfba-af66-4e22-9eb5-183077617949")
+      refund_history =
+        RefundModel.retrieve_refund_history(%Order{id: "1da3cfba-af66-4e22-9eb5-183077617949"})
 
       assert refund_history == [
                %{

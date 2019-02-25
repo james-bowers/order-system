@@ -5,13 +5,13 @@ defmodule Test.OrderSystem.TransferModel do
   alias OrderSystem.{TransferModel}
 
   test "get account balance" do
-    account = Test.AccountFixture.create_account()
-    Test.TransferFixture.create_transfer!(%{account_id: account.id, amount: 2000})
-    Test.TransferFixture.create_transfer!(%{account_id: account.id, amount: 2000})
-    Test.TransferFixture.create_transfer!(%{account_id: account.id, amount: -500})
-    Test.TransferFixture.create_transfer!(%{account_id: account.id, amount: 3000})
-    Test.TransferFixture.create_transfer!(%{account_id: account.id, amount: -2000})
+    account4_id = "437d0472-4d46-4b9c-a035-b8eed120aa62"
+    Test.TransferFixture.create_transfer!(%{account_id: account4_id, amount: 2000})
+    Test.TransferFixture.create_transfer!(%{account_id: account4_id, amount: 2000})
+    Test.TransferFixture.create_transfer!(%{account_id: account4_id, amount: -500})
+    Test.TransferFixture.create_transfer!(%{account_id: account4_id, amount: 3000})
+    Test.TransferFixture.create_transfer!(%{account_id: account4_id, amount: -2000})
 
-    assert TransferModel.get_balance!(account.id) == 4500
+    assert TransferModel.get_balance!(account4_id) == 4500
   end
 end

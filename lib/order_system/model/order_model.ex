@@ -20,10 +20,10 @@ defmodule OrderSystem.OrderModel do
     |> Map.put(:id, inserted_order.id)
   end
 
-  def retrieve_order(order_id) do
+  def retrieve_order(%Order{} = order) do
     query =
       from(o in Order,
-        where: o.id == ^order_id,
+        where: o.id == ^order.id,
         inner_join: i in assoc(o, :item),
         inner_join: p in assoc(i, :product),
         select: %{title: p.title, amount: p.amount, item_id: i.id},

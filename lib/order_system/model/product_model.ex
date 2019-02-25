@@ -4,11 +4,9 @@ defmodule OrderSystem.ProductModel do
   def create_product(%{quantity: quantity, title: title, amount: amount} = params)
       when is_binary(title) and is_integer(amount) do
     Repo.transaction(fn ->
-      attrs = Map.take(params, [:title, :amount])
-
       product =
         %Product{}
-        |> Product.changeset(attrs)
+        |> Product.changeset(params)
         |> Repo.insert!()
 
       {inserted_items, _} =

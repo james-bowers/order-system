@@ -1,5 +1,5 @@
 defmodule OrderSystem.RefundModel do
-  alias OrderSystem.{Repo, Refund, TransferModel}
+  alias OrderSystem.{Repo, Refund, Order, TransferModel}
   use OrderSystem.Query
 
   def create_refund(%{order_id: _, amount: _, account_id: _} = attrs) do
@@ -22,10 +22,10 @@ defmodule OrderSystem.RefundModel do
     |> Map.put(:transfer_id, transfer.id)
   end
 
-  def retrieve_refund_history(order_id) do
+  def retrieve_refund_history(%Order{} = order) do
     query =
       from(r in Refund,
-        where: r.order_id == ^order_id,
+        where: r.order_id == ^order.id,
         inner_join: t in assoc(r, :transfer),
         select: %{
           refunded_at: r.inserted_at,
