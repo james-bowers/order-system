@@ -15,4 +15,12 @@ defmodule Test.OrderSystemWeb.Integration.Status do
     assert get_resp_header(conn, "content-type") == ["text/plain; charset=utf-8"]
     assert conn.resp_body == "OK"
   end
+
+  test "/status parses query strings" do
+    conn = conn(:get, "/status?page=2")
+    conn = Router.call(conn, @opts)
+
+    assert conn.status == 200
+    assert conn.assigns == %{options: [page: "2"]}
+  end
 end

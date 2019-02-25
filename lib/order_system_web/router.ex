@@ -6,6 +6,13 @@ defmodule OrderSystemWeb.Router do
 
   plug(:match)
   plug(:dispatch)
+  plug(OrderSystem.Plug.FormatRequest)
+
+  plug(Plug.Parsers,
+    parsers: [:urlencoded, :json],
+    pass: ["text/*"],
+    json_decoder: Poison
+  )
 
   get "/status" do
     conn
