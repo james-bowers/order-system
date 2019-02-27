@@ -6,7 +6,7 @@ defmodule OrderSystemWeb.Router do
 
   plug(:match)
   plug(:dispatch)
-  plug(OrderSystem.Plug.FormatRequest)
+  plug(OrderSystem.Plug.FormatQueryString)
 
   plug(Plug.Parsers,
     parsers: [:urlencoded, :json],

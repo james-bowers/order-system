@@ -17,10 +17,10 @@ defmodule Test.OrderSystemWeb.Integration.Status do
   end
 
   test "/status parses query strings" do
-    conn = conn(:get, "/status?page=2")
+    conn = conn(:get, "/status?page=2&limit=20")
     conn = Router.call(conn, @opts)
 
     assert conn.status == 200
-    assert conn.assigns == %{options: [page: "2"]}
+    assert conn.assigns == %{options: [limit: 20, page: 2]}
   end
 end
