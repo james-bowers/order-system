@@ -5,30 +5,19 @@ defmodule Test.OrderSystem.OrderTransferModel do
   alias OrderSystem.{OrderTransferModel}
 
   test "registers a transfer for a given order (part of the create order db transaction)" do
-    account1 = Test.AccountFixture.create_account()
-    account2 = Test.AccountFixture.create_account()
-
-    {product1_id, _quantity} = Test.ProductFixture.create_product()
-
-    order1 =
-      Test.OrderFixture.create_order(%{
-        items: [
-          %{
-            product_id: product1_id,
-            quantity: 5
-          }
-        ]
-      })
+    order1_id = "b03f40b3-5aa8-40f4-92c0-e0bf9d723c3c"
+    account1_id = "7f68c8ee-882b-4512-bd73-a7c2147e5f77"
+    account2_id = "cde9abbd-bcfd-46d1-a6ed-aec6d2c712ae"
 
     pay_order = %{
-      order_id: order1.id,
+      order_id: order1_id,
       transfer_to: [
         %{
-          account_id: account1.id,
+          account_id: account1_id,
           amount: 500
         },
         %{
-          account_id: account2.id,
+          account_id: account2_id,
           amount: 300
         }
       ]

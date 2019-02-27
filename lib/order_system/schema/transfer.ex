@@ -2,11 +2,12 @@ defmodule OrderSystem.Transfer do
   use OrderSystem.BaseSchema
   import Ecto.Changeset
 
-  alias OrderSystem.Account
+  alias OrderSystem.{Account, OrderTransfer}
 
   schema "transfer" do
     field(:amount, :integer)
     belongs_to(:account, Account)
+    has_many(:order_transfer, OrderTransfer)
 
     timestamps()
   end

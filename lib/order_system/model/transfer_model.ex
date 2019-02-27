@@ -1,5 +1,5 @@
 defmodule OrderSystem.TransferModel do
-  import Ecto.Query
+  use OrderSystem.Query
   alias OrderSystem.{Repo, Transfer}
 
   def create_transfer(attrs) do

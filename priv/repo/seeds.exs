@@ -15,6 +15,7 @@ IO.puts("Setting up seed data...")
 account1_id = "7f68c8ee-882b-4512-bd73-a7c2147e5f77"
 account2_id = "cde9abbd-bcfd-46d1-a6ed-aec6d2c712ae"
 account3_id = "eacb49e9-221e-488e-9e6d-a6fb529d5f4b"
+account4_id = "437d0472-4d46-4b9c-a035-b8eed120aa62"
 
 product1_id = "8ea46125-3d93-4858-bd14-c0de1f1a26cb"
 
@@ -49,6 +50,14 @@ OrderSystem.Repo.insert!(%OrderSystem.Account{
 
 OrderSystem.Repo.insert!(%OrderSystem.Account{
   id: account3_id,
+  inserted_at: ~N[2019-02-22 06:58:01],
+  stripe_account_id: nil,
+  title: "seed account title",
+  updated_at: ~N[2019-02-22 06:58:01]
+})
+
+OrderSystem.Repo.insert!(%OrderSystem.Account{
+  id: account4_id,
   inserted_at: ~N[2019-02-22 06:58:01],
   stripe_account_id: nil,
   title: "seed account title",
@@ -119,16 +128,16 @@ OrderSystem.Repo.insert!(%OrderSystem.Transfer{
   account_id: account3_id,
   amount: 3000,
   id: transfer4_id,
-  inserted_at: ~N[2019-02-22 16:59:38],
-  updated_at: ~N[2019-02-22 16:59:38]
+  inserted_at: ~N[2019-02-22 16:59:39],
+  updated_at: ~N[2019-02-22 16:59:39]
 })
 
 OrderSystem.Repo.insert!(%OrderSystem.Transfer{
   account_id: account3_id,
   amount: -2000,
   id: transfer5_id,
-  inserted_at: ~N[2019-02-22 16:59:38],
-  updated_at: ~N[2019-02-22 16:59:38]
+  inserted_at: ~N[2019-02-22 16:59:40],
+  updated_at: ~N[2019-02-22 16:59:40]
 })
 
 ######################################################

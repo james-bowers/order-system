@@ -1,5 +1,5 @@
 defmodule OrderSystem.ItemModel do
-  import Ecto.Query
+  use OrderSystem.Query
   alias OrderSystem.{Repo, Item}
 
   def create_items!(params \\ %{}, quantity) do
@@ -8,10 +8,10 @@ defmodule OrderSystem.ItemModel do
     Repo.insert_all(Item, List.duplicate(item.changes, quantity))
   end
 
-  def get_quantity(product_id, :available) do
+  def get_quantity(%Item{} = item, :available) do
     query =
       from(i in Item,
-        where: is_nil(i.order_id) and i.product_id == ^product_id,
+        where: is_nil(i.order_id) and i.product_id == ^item.product_id,
         select: count()
       )
 

@@ -30,7 +30,8 @@ defmodule OrderSystem.MixProject do
       {:cowboy, "~> 2.4"},
       {:plug_cowboy, "~> 2.0"},
       {:ecto_sql, "~> 3.0"},
-      {:postgrex, ">= 0.0.0"}
+      {:postgrex, ">= 0.0.0"},
+      {:poison, "~> 3.1"}
     ]
   end
 

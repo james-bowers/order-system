@@ -2,7 +2,7 @@ defmodule Test.OrderSystem.OrderModel do
   use ExUnit.Case
   use Test.OrderSystem.DataCase
 
-  alias OrderSystem.{OrderModel, ItemModel}
+  alias OrderSystem.{Order, OrderModel, Item, ItemModel}
 
   test "registers an order" do
     {product1_id, _} = Test.ProductFixture.create_product(%{quantity: 10})
@@ -23,12 +23,12 @@ defmodule Test.OrderSystem.OrderModel do
 
     OrderModel.create_order(order)
 
-    assert 7 == ItemModel.get_quantity(product1_id, :available)
-    assert 13 == ItemModel.get_quantity(product2_id, :available)
+    assert 7 == ItemModel.get_quantity(%Item{product_id: product1_id}, :available)
+    assert 13 == ItemModel.get_quantity(%Item{product_id: product2_id}, :available)
   end
 
   test "get items in an order" do
-    items = OrderModel.retrieve_order("b03f40b3-5aa8-40f4-92c0-e0bf9d723c3c")
+    items = OrderModel.retrieve_order(%Order{id: "b03f40b3-5aa8-40f4-92c0-e0bf9d723c3c"})
 
     assert items == [
              %{
