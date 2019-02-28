@@ -16,6 +16,7 @@ defmodule Test.OrderSystem.DataCase do
 
   using do
     quote do
+      use ExUnit.Case
       alias OrderSystem.Repo
 
       import Ecto
