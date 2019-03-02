@@ -5,17 +5,17 @@ defmodule Test.OrderSystem.OrderModel do
   alias OrderSystem.{Order, OrderModel, Item, ItemModel}
 
   test "registers an order" do
-    {product1_id, _} = Test.ProductFixture.create_product(%{quantity: 10})
-    {product2_id, _} = Test.ProductFixture.create_product(%{quantity: 15})
+    {product1, _} = Test.ProductFixture.create_product(%{quantity: 10})
+    {product2, _} = Test.ProductFixture.create_product(%{quantity: 15})
 
     order = %{
       items: [
         %{
-          product_id: product1_id,
+          product_id: product1.id,
           quantity: 3
         },
         %{
-          product_id: product2_id,
+          product_id: product2.id,
           quantity: 2
         }
       ]
@@ -23,8 +23,8 @@ defmodule Test.OrderSystem.OrderModel do
 
     OrderModel.create_order(order)
 
-    assert 7 == ItemModel.get_quantity(%Item{product_id: product1_id}, :available)
-    assert 13 == ItemModel.get_quantity(%Item{product_id: product2_id}, :available)
+    assert 7 == ItemModel.get_quantity(%Item{product_id: product1.id}, :available)
+    assert 13 == ItemModel.get_quantity(%Item{product_id: product2.id}, :available)
   end
 
   test "get items in an order" do
