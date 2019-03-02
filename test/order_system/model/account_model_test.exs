@@ -1,5 +1,4 @@
 defmodule Test.OrderSystem.AccountModel do
-  use ExUnit.Case
   use Test.OrderSystem.DataCase
 
   alias OrderSystem.{Account, AccountModel}
