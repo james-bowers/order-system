@@ -10,20 +10,7 @@ defmodule OrderSystemWeb do
   def view do
     quote do
       import Plug.Conn
-
-      defp send_json(conn, status, content) do
-        conn
-        |> put_resp_content_type("application/json")
-        |> send_resp(status, Poison.encode!(content))
-      end
-
-      defp format_changeset(changeset) do
-        Ecto.Changeset.traverse_errors(changeset, fn {msg, opts} ->
-          Enum.reduce(opts, msg, fn {key, value}, acc ->
-            String.replace(acc, "%{#{key}}", to_string(value))
-          end)
-        end)
-      end
+      import OrderSystemWeb.View
     end
   end
 
