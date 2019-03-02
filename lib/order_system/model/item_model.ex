@@ -2,7 +2,7 @@ defmodule OrderSystem.ItemModel do
   use OrderSystem.Query
   alias OrderSystem.{Repo, Item}
 
-  def create_items!(params \\ %{}, quantity) do
+  def create_items(params \\ %{}, quantity) do
     item = Item.changeset(%Item{}, params)
 
     Repo.insert_all(Item, List.duplicate(item.changes, quantity))

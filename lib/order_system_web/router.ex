@@ -2,12 +2,10 @@ defmodule OrderSystemWeb.Router do
   use Plug.Router
   use Plug.Debugger
   use Plug.ErrorHandler
-  alias OrderSystemWeb.Controller.Account
+  alias OrderSystemWeb.Controller.{Account, Product}
 
   plug(Plug.Logger)
   plug(OrderSystem.Plug.FormatQueryString)
-  plug(:match)
-  plug(:dispatch)
 
   plug(Plug.Parsers,
     parsers: [:urlencoded, :json],
@@ -15,11 +13,16 @@ defmodule OrderSystemWeb.Router do
     json_decoder: Poison
   )
 
+  plug(:match)
+  plug(:dispatch)
+
   get "/status" do
     conn
     |> put_resp_content_type("text/plain")
     |> send_resp(200, "OK")
   end
+
+  post("/product", do: Product.new(conn))
 
   post("/account", do: Account.new(conn))
   get("/account/:account_id", do: Account.fetch(conn))

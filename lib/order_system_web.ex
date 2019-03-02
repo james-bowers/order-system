@@ -4,6 +4,12 @@ defmodule OrderSystemWeb do
   def controller do
     quote do
       import Plug.Conn
+
+      def take_params(conn, params) do
+        conn.body_params
+        |> Map.take(params)
+        |> Map.new(fn {k, v} -> {String.to_atom(k), v} end)
+      end
     end
   end
 
