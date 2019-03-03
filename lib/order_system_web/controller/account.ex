@@ -1,15 +1,15 @@
 defmodule OrderSystemWeb.Controller.Account do
   use OrderSystemWeb, :controller
 
-  alias OrderSystem.{Account, AccountModel}
-  alias OrderSystemWeb.AccountView
+  alias OrderSystem.{Account, AccountModel, TransferModel}
+  alias OrderSystemWeb.{ErrorView, AccountView}
 
   def new(conn) do
     account_params = %{title: conn.params["title"]}
 
     case AccountModel.create_account(account_params) do
       {:ok, result} -> AccountView.render(conn, :new_account, result)
-      {:error, changeset} -> AccountView.render(conn, :error, changeset)
+      {:error, changeset} -> ErrorView.render(conn, :error, changeset)
     end
   end
 
@@ -22,6 +22,11 @@ defmodule OrderSystemWeb.Controller.Account do
     transfer_history = AccountModel.transfer_history(account(conn))
 
     AccountView.render(conn, :transfer_history, transfer_history)
+  end
+
+  def fetch_balance(conn) do
+    balance = TransferModel.get_balance(account(conn))
+    AccountView.render(conn, :transfer_balance, balance)
   end
 
   def fetch_sold_products(conn) do

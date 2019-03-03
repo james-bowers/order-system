@@ -1,7 +1,7 @@
 defmodule OrderSystemWeb.Controller.Product do
   use OrderSystemWeb, :controller
 
-  alias OrderSystem.{Product, ProductModel}
+  alias OrderSystem.{ProductModel}
   alias OrderSystemWeb.ProductView
 
   @params ["quantity", "amount", "title"]

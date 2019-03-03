@@ -1,6 +1,6 @@
 defmodule OrderSystem.TransferModel do
   use OrderSystem.Query
-  alias OrderSystem.{Repo, Transfer}
+  alias OrderSystem.{Repo, Transfer, Account}
 
   def create_transfer(attrs) do
     %Transfer{}
@@ -12,8 +12,8 @@ defmodule OrderSystem.TransferModel do
     Repo.get!(Transfer, id)
   end
 
-  def get_balance!(account_id) do
-    query = from(t in Transfer, where: t.account_id == ^account_id)
+  def get_balance(%Account{} = account) do
+    query = from(t in Transfer, where: t.account_id == ^account.id)
 
     Repo.aggregate(query, :sum, :amount)
   end

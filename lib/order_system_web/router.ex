@@ -5,7 +5,7 @@ defmodule OrderSystemWeb.Router do
   alias OrderSystemWeb.Controller.{Account, Product}
 
   plug(Plug.Logger)
-  plug(OrderSystem.Plug.FormatQueryString)
+  plug(OrderSystemWeb.Plug.FormatQueryString)
 
   plug(Plug.Parsers,
     parsers: [:urlencoded, :json],
@@ -14,6 +14,7 @@ defmodule OrderSystemWeb.Router do
   )
 
   plug(:match)
+  plug(OrderSystemWeb.Plug.ValidPathId, ["account_id"])
   plug(:dispatch)
 
   get "/status" do
@@ -26,6 +27,7 @@ defmodule OrderSystemWeb.Router do
 
   post("/account", do: Account.new(conn))
   get("/account/:account_id", do: Account.fetch(conn))
+  get("/account/:account_id/balance", do: Account.fetch_balance(conn))
   get("/account/:account_id/sold-products", do: Account.fetch_sold_products(conn))
   get("/account/:account_id/transfer-history", do: Account.fetch_transfer_history(conn))
 

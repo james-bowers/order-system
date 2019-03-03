@@ -1,4 +1,4 @@
-defmodule OrderSystem.Plug.FormatQueryString do
+defmodule OrderSystemWeb.Plug.FormatQueryString do
   import Plug.Conn
 
   @integer_option_keys ["page", "limit"]

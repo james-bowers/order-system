@@ -11,9 +11,9 @@ defmodule OrderSystemWeb.AccountView do
     render(conn, :fetch, content)
   end
 
-  def render(conn, :error, %Ecto.Changeset{} = changeset) do
+  def render(conn, :transfer_balance, balance) do
     conn
-    |> send_json(400, format_changeset(changeset))
+    |> send_json(200, %{balance: balance})
   end
 
   def render(conn, :transfer_history, transfer_history) do

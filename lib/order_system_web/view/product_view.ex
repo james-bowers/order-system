@@ -2,7 +2,7 @@ defmodule OrderSystemWeb.ProductView do
   use OrderSystemWeb, :view
   alias OrderSystem.Product
 
-  def render(conn, :new_product, {product, _available_items}) do
+  def render(conn, :new_product, {%Product{} = product, _available_items}) do
     conn
     |> send_json(200, Map.take(product, [:id, :title, :quantity]))
   end

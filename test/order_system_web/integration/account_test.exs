@@ -32,6 +32,22 @@ defmodule Test.OrderSystemWeb.Integration.Account do
     assert conn.resp_body == ~s({"title":"seed account title","id":"#{@account1_id}"})
   end
 
+  test "retrieves balance of an account" do
+    conn = conn(:get, "/account/#{@account1_id}/balance")
+    conn = Router.call(conn, @opts)
+
+    assert conn.status == 200
+    assert conn.resp_body == ~s({"balance":1500})
+  end
+
+  test "fails to get balance of invalid account id" do
+    conn = conn(:get, "/account/foo-bar/balance")
+    conn = Router.call(conn, @opts)
+
+    assert conn.status == 400
+    assert conn.resp_body == ~s({"error":"Invalid Id"})
+  end
+
   test "retrieves account transfer history" do
     conn = conn(:get, "/account/#{@account3_id}/transfer-history")
     conn = Router.call(conn, @opts)
