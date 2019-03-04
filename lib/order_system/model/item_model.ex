@@ -18,14 +18,14 @@ defmodule OrderSystem.ItemModel do
     Repo.one(query)
   end
 
-  def reserve_items!(order) do
+  def reserve_items(order) do
     order.items
-    |> Enum.map(fn item -> reserve_item!(order, item) end)
+    |> Enum.map(fn item -> reserve_item(order, item) end)
 
     order
   end
 
-  defp reserve_item!(order, item) do
+  defp reserve_item(order, item) do
     items_to_reserve =
       from(i in Item,
         select: i.id,
@@ -33,6 +33,7 @@ defmodule OrderSystem.ItemModel do
         limit: ^item.quantity
       )
 
+    # TODO: if update_all fails, check this stops order insert transaction
     from(i in Item, join: s in subquery(items_to_reserve), on: i.id == s.id)
     |> Repo.update_all(set: [order_id: order.id])
   end

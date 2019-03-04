@@ -4,20 +4,25 @@ defmodule OrderSystem.OrderModel do
 
   def create_order(order) do
     Repo.transaction(fn ->
-      order
-      |> insert_order!()
-      |> ItemModel.reserve_items!()
+      with {:ok, order} <- insert_order(order),
+           items = ItemModel.reserve_items(order) do
+        {:ok, order, items}
+      else
+        {:error, error} -> Repo.rollback(error)
+      end
     end)
   end
 
-  defp insert_order!(order) do
-    inserted_order =
+  defp insert_order(order) do
+    result =
       %Order{}
       |> Order.changeset(%{})
-      |> Repo.insert!()
+      |> Repo.insert()
 
-    order
-    |> Map.put(:id, inserted_order.id)
+    case result do
+      {:ok, inserted_order} -> {:ok, Map.put(order, :id, inserted_order.id)}
+      {:error, changeset} -> {:error, changeset}
+    end
   end
 
   def retrieve_order(%Order{} = order) do

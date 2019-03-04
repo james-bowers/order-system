@@ -4,7 +4,7 @@ defmodule OrderSystem.PayoutModel do
   def create_payout(attrs) do
     Repo.transaction(fn ->
       with {:ok, transfer_attrs} <- insert_transfer(attrs),
-      {:ok, payout} <- insert_payout(transfer_attrs) do
+           {:ok, payout} <- insert_payout(transfer_attrs) do
         payout
       else
         {:error, error} -> Repo.rollback(error)
