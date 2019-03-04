@@ -7,7 +7,7 @@ defmodule Test.OrderSystemWeb.Integration.Product do
   @opts Router.init([])
 
   @valid_attrs %{amount: 2500, title: "A product title", quantity: 50}
-  @invalid_attrs %{}
+  @invalid_attrs %{quantity: 20}
 
   test "/product returns 200" do
     conn = conn(:post, "/product", @valid_attrs)

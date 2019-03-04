@@ -1,7 +1,7 @@
 defmodule OrderSystem.PayoutModel do
   alias OrderSystem.{Repo, Payout, TransferModel}
 
-  def create_payout(%{amount: _, account_id: _, stripe_transfer_id: _} = attrs) do
+  def create_payout(attrs) do
     Repo.transaction(fn ->
       with {:ok, transfer_attrs} <- insert_transfer(attrs),
       {:ok, payout} <- insert_payout(transfer_attrs) do

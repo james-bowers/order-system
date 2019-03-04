@@ -17,4 +17,13 @@ defmodule Test.OrderSystem.PayoutModel do
 
     assert TransferModel.get_transfer!(payout.transfer_id).amount == -5000
   end
+
+  test "rollback failure when inserting payout" do
+    account1_id = "7f68c8ee-882b-4512-bd73-a7c2147e5f77"
+
+    invalid_attrs = %{ account_id: account1_id, amount: -5000 }
+
+    {:error, changeset} = PayoutModel.create_payout(invalid_attrs)
+    assert errors_on(changeset) == %{stripe_transfer_id: ["can't be blank"]}
+  end
 end

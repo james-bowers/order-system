@@ -14,7 +14,7 @@ defmodule OrderSystemWeb.Controller.Account do
   end
 
   def fetch(conn) do
-    account = AccountModel.get_account!(account(conn))
+    {:ok, account} = AccountModel.get_account(account(conn))
     AccountView.render(conn, :fetch, account)
   end
 
