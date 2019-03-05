@@ -21,7 +21,7 @@ defmodule Test.OrderSystem.OrderModel do
       ]
     }
 
-    {:ok, _order} = OrderModel.create_order(order)
+    {:ok, {_order, 5}} = OrderModel.create_order(order)
 
     assert 7 == ItemModel.get_quantity(%Item{product_id: product1.id}, :available)
     assert 13 == ItemModel.get_quantity(%Item{product_id: product2.id}, :available)

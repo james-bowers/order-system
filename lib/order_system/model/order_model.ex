@@ -5,8 +5,8 @@ defmodule OrderSystem.OrderModel do
   def create_order(order) do
     Repo.transaction(fn ->
       with {:ok, order} <- insert_order(order),
-           {:ok, _quantity} <- ItemModel.reserve_items(order) do
-        order
+           {:ok, reserved_item_quantity} <- ItemModel.reserve_items(order) do
+        {order, reserved_item_quantity}
       else
         {:error, error} -> Repo.rollback(error)
       end

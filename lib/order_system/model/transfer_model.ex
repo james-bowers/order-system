@@ -8,8 +8,11 @@ defmodule OrderSystem.TransferModel do
     |> Repo.insert()
   end
 
-  def get_transfer!(id) do
-    Repo.get!(Transfer, id)
+  def get_transfer(%Transfer{} = transfer) do
+    case Repo.get(Transfer, transfer.id) do
+      nil -> :not_found
+      transfer -> {:ok, transfer}
+    end
   end
 
   def get_balance(%Account{} = account) do
