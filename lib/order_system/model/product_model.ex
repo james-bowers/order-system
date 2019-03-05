@@ -1,7 +1,7 @@
 defmodule OrderSystem.ProductModel do
   alias OrderSystem.{Repo, ItemModel, Product}
 
-  def create_product(params) do
+  def create_product(%{quantity: _} = params) do
     Repo.transaction(fn ->
       with {:ok, product} <- insert_product(params),
            {inserted_items, _} <- insert_items(params, product) do

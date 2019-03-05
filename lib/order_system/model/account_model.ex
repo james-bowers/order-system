@@ -3,7 +3,12 @@ defmodule OrderSystem.AccountModel do
 
   alias OrderSystem.{Repo, Account}
 
-  def get_account!(%Account{} = account), do: Repo.get!(Account, account.id)
+  def get_account(%Account{} = account) do
+    case Repo.get(Account, account.id) do
+      nil -> :not_found
+      account -> {:ok, account}
+    end
+  end
 
   def create_account(attrs \\ %{}) do
     %Account{}

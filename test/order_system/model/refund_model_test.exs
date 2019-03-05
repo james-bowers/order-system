@@ -2,7 +2,7 @@ defmodule Test.OrderSystem.RefundModel do
   use ExUnit.Case
   use Test.OrderSystem.DataCase
 
-  alias OrderSystem.{RefundModel, TransferModel, Order}
+  alias OrderSystem.{RefundModel, Transfer, TransferModel, Order}
 
   test "refund an order" do
     valid_attrs = %{
@@ -16,7 +16,7 @@ defmodule Test.OrderSystem.RefundModel do
     assert Map.has_key?(result, :id)
     assert Map.has_key?(result, :order_id)
     assert Map.has_key?(result, :transfer_id)
-    assert TransferModel.get_transfer!(result.transfer_id).amount == -2000
+    assert {:ok, %Transfer{amount: -2000}} = TransferModel.get_transfer(%Transfer{id: result.transfer_id})
   end
 
   describe "retrieve refund history" do

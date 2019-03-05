@@ -4,7 +4,7 @@ defmodule OrderSystem.OrderTransferModel do
   def create_order_transfer(attrs) do
     Repo.transaction(fn ->
       attrs
-      |> add_order_id_to_each_transfer
+      |> add_order_id_to_each_transfer()
       |> insert_transfers()
     end)
   end

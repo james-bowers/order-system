@@ -11,4 +11,11 @@ defmodule Test.OrderSystem.ProductModel do
 
     assert @quantity == ItemModel.get_quantity(%Item{product_id: product.id}, :available)
   end
+
+  test "create_product/1 without title" do
+    invalid_attrs = Map.delete(@valid_attrs, :title)
+    {:error, changeset} = ProductModel.create_product(invalid_attrs)
+
+    assert errors_on(changeset) == %{title: ["can't be blank"]}
+  end
 end
