@@ -21,10 +21,39 @@ defmodule Test.OrderSystem.OrderModel do
       ]
     }
 
-    OrderModel.create_order(order)
+    {:ok, _order} = OrderModel.create_order(order)
 
     assert 7 == ItemModel.get_quantity(%Item{product_id: product1.id}, :available)
     assert 13 == ItemModel.get_quantity(%Item{product_id: product2.id}, :available)
+  end
+
+  test "prevents oversell & rolls back" do
+    {product1, _} = Test.ProductFixture.create_product(%{quantity: 5})
+    {product2, _} = Test.ProductFixture.create_product(%{quantity: 10})
+    {product3, _} = Test.ProductFixture.create_product(%{quantity: 5})
+
+    order = %{
+      items: [
+        %{
+          product_id: product1.id,
+          quantity: 3
+        },
+        %{
+          product_id: product2.id,
+          quantity: 11
+        },
+        %{
+          product_id: product3.id,
+          quantity: 3
+        }
+      ]
+    }
+
+    {:error, :not_all_updated} = OrderModel.create_order(order)
+
+    assert 5 == ItemModel.get_quantity(%Item{product_id: product1.id}, :available)
+    assert 10 == ItemModel.get_quantity(%Item{product_id: product2.id}, :available)
+    assert 5 == ItemModel.get_quantity(%Item{product_id: product3.id}, :available)
   end
 
   test "get items in an order" do

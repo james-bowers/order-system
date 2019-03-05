@@ -5,8 +5,8 @@ defmodule OrderSystem.OrderModel do
   def create_order(order) do
     Repo.transaction(fn ->
       with {:ok, order} <- insert_order(order),
-           items = ItemModel.reserve_items(order) do
-        {:ok, order, items}
+           {:ok, _quantity} <- ItemModel.reserve_items(order) do
+        order
       else
         {:error, error} -> Repo.rollback(error)
       end
@@ -14,12 +14,12 @@ defmodule OrderSystem.OrderModel do
   end
 
   defp insert_order(order) do
-    result =
+    insert_result =
       %Order{}
       |> Order.changeset(%{})
       |> Repo.insert()
 
-    case result do
+    case insert_result do
       {:ok, inserted_order} -> {:ok, Map.put(order, :id, inserted_order.id)}
       {:error, changeset} -> {:error, changeset}
     end
