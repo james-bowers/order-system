@@ -15,7 +15,8 @@ defmodule Test.OrderSystem.PayoutModel do
 
     {:ok, payout} = PayoutModel.create_payout(valid_attrs)
 
-    assert {:ok, %Transfer{amount: -5000}} = TransferModel.get_transfer(%Transfer{id: payout.transfer_id})
+    assert {:ok, %Transfer{amount: -5000}} =
+             TransferModel.get_transfer(%Transfer{id: payout.transfer_id})
   end
 
   test "rollback failure when inserting payout" do
