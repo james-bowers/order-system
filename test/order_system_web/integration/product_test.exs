@@ -23,6 +23,8 @@ defmodule Test.OrderSystemWeb.Integration.Product do
     conn = Router.call(conn, @opts)
 
     assert conn.status == 400
-    assert conn.resp_body == ~s({"title":["can't be blank"],"amount":["can't be blank"]})
+
+    assert conn.resp_body ==
+             ~s({"description":"Sorry, we have not created your product, as the request made was invalid.","content":{"changeset":{"title":["can't be blank"],"amount":["can't be blank"]},"action":"product"}})
   end
 end

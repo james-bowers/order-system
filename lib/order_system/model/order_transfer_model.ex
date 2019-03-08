@@ -2,7 +2,6 @@ defmodule OrderSystem.OrderTransferModel do
   alias OrderSystem.{Repo, OrderTransfer, TransferModel}
 
   def create_order_transfer(attrs) do
-
     Repo.transaction(fn ->
       attrs
       |> add_ids()
@@ -16,18 +15,6 @@ defmodule OrderSystem.OrderTransferModel do
       Map.merge(base_transfer, %{order_id: attrs.order_id})
     end)
   end
-
-  # defp insert(order, transfer) do
-  #   transfer_id = Ecto.UUID.generate()
-  #   Repo.insert(%OrderTransfer{
-  #     order_id: order.id,
-  #     transfer_id: transfer_id,
-  #     transfer: %Transfer{
-  #       id: transfer_id,
-  #       amount: transfer.amount
-  #     }
-  #   })
-  # end
 
   defp insert_transfers(transfer_to) do
     transfer_to

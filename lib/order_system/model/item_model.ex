@@ -39,7 +39,6 @@ defmodule OrderSystem.ItemModel do
         limit: ^item.quantity
       )
 
-    # TODO: if update_all fails, check this stops order insert transaction
     from(i in Item, join: s in subquery(items_to_reserve), on: i.id == s.id)
     |> Repo.update_all(set: [order_id: order.id])
     |> validate_update(item)
