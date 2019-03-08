@@ -34,8 +34,8 @@ defmodule OrderSystem.ItemModel do
   defp reserve_item(order, item) do
     items_to_reserve =
       from(i in Item,
-        select: i.id,
-        where: i.product_id == ^item.product_id,
+        select: %{id: i.id},
+        where: i.product_id == ^item.product_id and is_nil(i.order_id),
         limit: ^item.quantity
       )
 
