@@ -11,7 +11,7 @@ defmodule OrderSystem.OrderModel do
     end)
   end
 
-  defp reserve_items(order) do
+  def reserve_items(order) do
     Enum.reduce(order.items, Multi.new(), fn item, multi ->
       query = reserve_item_query(item)
 
