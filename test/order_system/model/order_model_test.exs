@@ -2,39 +2,7 @@ defmodule Test.OrderSystem.OrderModel do
   use ExUnit.Case
   use Test.OrderSystem.DataCase
 
-  alias OrderSystem.{Order, OrderModel, Item, ItemModel}
-
-  @product1_id "8ea46125-3d93-4858-bd14-c0de1f1a26cb"
-
-  test "registers an order" do
-    order = %{
-      items: [
-        %{
-          product_id: @product1_id,
-          quantity: 2
-        }
-      ]
-    }
-
-    {:ok, {_order, 2}} = OrderModel.create_order(order)
-
-    assert 1 == ItemModel.get_quantity(%Item{product_id: @product1_id}, :available)
-  end
-
-  test "prevents oversell & rolls back" do
-    order = %{
-      items: [
-        %{
-          product_id: @product1_id,
-          quantity: 4
-        }
-      ]
-    }
-
-    {:error, :not_all_updated} = OrderModel.create_order(order)
-
-    assert 3 == ItemModel.get_quantity(%Item{product_id: @product1_id}, :available)
-  end
+  alias OrderSystem.{Order, OrderModel}
 
   test "get items in an order" do
     items = OrderModel.retrieve_order(%Order{id: "b03f40b3-5aa8-40f4-92c0-e0bf9d723c3c"})

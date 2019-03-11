@@ -1,28 +1,49 @@
 defmodule OrderSystem.OrderModel do
-  alias OrderSystem.{Repo, Order, ItemModel}
+  alias Ecto.Multi
+  alias OrderSystem.{Repo, Item, Order}
   use OrderSystem.Query
 
   def create_order(order) do
-    Repo.transaction(fn ->
-      with {:ok, order} <- insert_order(order),
-           {:ok, reserved_item_quantity} <- ItemModel.reserve_items(order) do
-        {order, reserved_item_quantity}
-      else
-        {:error, error} -> Repo.rollback(error)
-      end
+    Multi.new()
+    |> Multi.insert(:order, insert_order(order))
+    |> Multi.merge(fn %{order: inserted_order} ->
+      reserve_items(Map.put(order, :id, inserted_order.id))
     end)
   end
 
-  defp insert_order(order) do
-    insert_result =
-      %Order{}
-      |> Order.changeset(%{})
-      |> Repo.insert()
+  defp reserve_items(order) do
+    Enum.reduce(order.items, Multi.new(), fn item, multi ->
+      query = reserve_item_query(item)
 
-    case insert_result do
-      {:ok, inserted_order} -> {:ok, Map.put(order, :id, inserted_order.id)}
-      {:error, changeset} -> {:error, changeset}
+      multi
+      |> Multi.update_all(:reserve_items, query, set: [order_id: order.id])
+      |> Multi.run(:validate_quantity, fn _repo, changes ->
+        validate_reserved_item_quantity(changes, item)
+      end)
+    end)
+  end
+
+  defp validate_reserved_item_quantity(%{reserve_items: {updated_records_count, _}}, item) do
+    case updated_records_count == item.quantity do
+      true -> {:ok, updated_records_count}
+      false -> {:error, :insufficient_quantity}
     end
+  end
+
+  defp reserve_item_query(item) do
+    items_to_reserve =
+      from(i in Item,
+        select: %{id: i.id},
+        where: i.product_id == ^item.product_id and is_nil(i.order_id),
+        limit: ^item.quantity
+      )
+
+    from(i in Item, join: s in subquery(items_to_reserve), on: i.id == s.id)
+  end
+
+  defp insert_order(order) do
+    %Order{}
+    |> Order.changeset(order)
   end
 
   def retrieve_order(%Order{} = order) do
