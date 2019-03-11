@@ -15,6 +15,5 @@ defmodule OrderSystem.Account do
   def changeset(account, attrs) do
     account
     |> cast(attrs, [:title, :stripe_account_id])
-    |> validate_required([:title])
   end
 end
