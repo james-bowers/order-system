@@ -2,23 +2,25 @@ defmodule Test.OrderSystem.RefundModel do
   use ExUnit.Case
   use Test.OrderSystem.DataCase
 
-  alias OrderSystem.{RefundModel, Transfer, TransferModel, Order}
+  alias OrderSystem.{RefundModel, Order}
+  alias Ecto.Multi
+
+  @valid_attrs %{
+    order_id: "b03f40b3-5aa8-40f4-92c0-e0bf9d723c3c",
+    transfer_id: "fa24c89f-8708-452f-afd8-3f12678d0282"
+  }
 
   test "refund an order" do
-    valid_attrs = %{
-      order_id: "b03f40b3-5aa8-40f4-92c0-e0bf9d723c3c",
-      amount: -2000,
-      account_id: "7f68c8ee-882b-4512-bd73-a7c2147e5f77"
-    }
+    assert [
+             refund: {:insert, changeset, []}
+           ] = RefundModel.create_refund(@valid_attrs) |> Multi.to_list()
 
-    {:ok, result} = RefundModel.create_refund(valid_attrs)
+    assert changeset.valid? == true
 
-    assert Map.has_key?(result, :id)
-    assert Map.has_key?(result, :order_id)
-    assert Map.has_key?(result, :transfer_id)
-
-    assert {:ok, %Transfer{amount: -2000}} =
-             TransferModel.get_transfer(%Transfer{id: result.transfer_id})
+    assert changeset.changes == %{
+             order_id: "b03f40b3-5aa8-40f4-92c0-e0bf9d723c3c",
+             transfer_id: "fa24c89f-8708-452f-afd8-3f12678d0282"
+           }
   end
 
   describe "retrieve refund history" do

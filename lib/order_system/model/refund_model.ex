@@ -1,25 +1,16 @@
 defmodule OrderSystem.RefundModel do
-  alias OrderSystem.{Repo, Refund, Order, TransferModel}
+  alias OrderSystem.{Repo, Refund, Order}
+  alias Ecto.Multi
   use OrderSystem.Query
 
-  def create_refund(%{order_id: _, amount: _, account_id: _} = attrs) do
-    Repo.transaction(fn ->
-      transfer_attrs = insert_transfer!(attrs)
-
-      {:ok, refund} =
-        %Refund{}
-        |> Refund.changeset(transfer_attrs)
-        |> Repo.insert()
-
-      refund
-    end)
+  def create_refund(%{order_id: _, transfer_id: _} = attrs) do
+    Multi.new()
+    |> Multi.insert(:refund, refund_changeset(attrs))
   end
 
-  defp insert_transfer!(transfer_attrs) do
-    {:ok, transfer} = TransferModel.create_transfer(transfer_attrs)
-
-    transfer_attrs
-    |> Map.put(:transfer_id, transfer.id)
+  defp refund_changeset(attrs) do
+    %Refund{}
+    |> Refund.changeset(attrs)
   end
 
   def retrieve_refund_history(%Order{} = order) do

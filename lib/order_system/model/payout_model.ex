@@ -1,28 +1,14 @@
 defmodule OrderSystem.PayoutModel do
-  alias OrderSystem.{Repo, Payout, TransferModel}
+  alias Ecto.Multi
+  alias OrderSystem.{Payout}
 
-  def create_payout(attrs) do
-    Repo.transaction(fn ->
-      with {:ok, transfer_attrs} <- insert_transfer(attrs),
-           {:ok, payout} <- insert_payout(transfer_attrs) do
-        payout
-      else
-        {:error, error} -> Repo.rollback(error)
-      end
-    end)
+  def create_payout(%{transfer_id: _, stripe_transfer_id: _} = attrs) do
+    Multi.new()
+    |> Multi.insert(:payout, insert_payout_changeset(attrs))
   end
 
-  defp insert_payout(transfer_attrs) do
+  defp insert_payout_changeset(attrs) do
     %Payout{}
-    |> Payout.changeset(transfer_attrs)
-    |> Repo.insert()
-  end
-
-  defp insert_transfer(transfer_attrs) do
-    with {:ok, transfer} <- TransferModel.create_transfer(transfer_attrs) do
-      {:ok, Map.put(transfer_attrs, :transfer_id, transfer.id)}
-    else
-      {:error, changeset} -> {:error, changeset}
-    end
+    |> Payout.changeset(attrs)
   end
 end

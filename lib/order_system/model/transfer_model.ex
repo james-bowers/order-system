@@ -1,11 +1,16 @@
 defmodule OrderSystem.TransferModel do
   use OrderSystem.Query
   alias OrderSystem.{Repo, Transfer, Account}
+  alias Ecto.Multi
 
   def create_transfer(attrs) do
+    Multi.new()
+    |> Multi.insert(:transfer, transfer_changeset(attrs))
+  end
+
+  defp transfer_changeset(attrs) do
     %Transfer{}
     |> Transfer.changeset(attrs)
-    |> Repo.insert()
   end
 
   def get_transfer(%Transfer{} = transfer) do
