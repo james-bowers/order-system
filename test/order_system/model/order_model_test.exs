@@ -6,11 +6,16 @@ defmodule Test.OrderSystem.OrderModel do
   alias OrderSystem.{Order, OrderModel}
 
   @product1_id "8ea46125-3d93-4858-bd14-c0de1f1a26cb"
+  @product2_id "1fe4bc96-dca7-47cf-856c-7535a012df1d"
   @order %{
     items: [
       %{
         product_id: @product1_id,
         quantity: 4
+      },
+      %{
+        product_id: @product2_id,
+        quantity: 1
       }
     ]
   }

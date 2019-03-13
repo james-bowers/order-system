@@ -3,12 +3,12 @@ defmodule OrderSystem.TransferModel do
   alias OrderSystem.{Repo, Transfer, Account}
   alias Ecto.Multi
 
-  def create_transfer(attrs) do
-    Multi.new()
-    |> Multi.insert(:transfer, transfer_changeset(attrs))
+  def create_transfer(multi \\ Multi.new(), key \\ :transfer, attrs) do
+    multi
+    |> Multi.insert(key, transfer_changeset(attrs))
   end
 
-  defp transfer_changeset(attrs) do
+  def transfer_changeset(attrs) do
     %Transfer{}
     |> Transfer.changeset(attrs)
   end
