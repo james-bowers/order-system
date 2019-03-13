@@ -1,7 +1,7 @@
 defmodule Test.OrderSystem.OrderController do
   use Test.OrderSystem.DataCase
 
-  alias OrderSystem.{Item, ItemModel, OrderController}
+  alias OrderSystem.{Product, ProductModel, OrderController}
 
   @product1_id "8ea46125-3d93-4858-bd14-c0de1f1a26cb"
 
@@ -21,7 +21,7 @@ defmodule Test.OrderSystem.OrderController do
               reserve_items: {2, nil}
             }} = OrderController.create_order(order)
 
-    assert 1 == ItemModel.get_quantity(%Item{product_id: @product1_id}, :available)
+    assert 1 == ProductModel.get_quantity(%Product{id: @product1_id}, :available)
   end
 
   test "prevents oversell & rolls back" do
@@ -40,6 +40,6 @@ defmodule Test.OrderSystem.OrderController do
               reserve_items: {3, nil}
             }} = OrderController.create_order(order)
 
-    assert 3 == ItemModel.get_quantity(%Item{product_id: @product1_id}, :available)
+    assert 3 == ProductModel.get_quantity(%Product{id: @product1_id}, :available)
   end
 end

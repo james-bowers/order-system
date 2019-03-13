@@ -1,6 +1,8 @@
 defmodule OrderSystem.ProductModel do
-  alias OrderSystem.{Item, Product}
+  alias OrderSystem.{Repo, Item, Product}
   alias Ecto.Multi
+
+  use OrderSystem.Query
 
   def create_product(%{quantity: _} = params) do
     Multi.new()
@@ -22,5 +24,15 @@ defmodule OrderSystem.ProductModel do
 
   defp items(%Product{} = product, params) do
     List.duplicate(%{product_id: product.id}, params.quantity)
+  end
+
+  def get_quantity(%Product{} = product, :available) do
+    query =
+      from(i in Item,
+        where: is_nil(i.order_id) and i.product_id == ^product.id,
+        select: count()
+      )
+
+    Repo.one(query)
   end
 end

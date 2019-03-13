@@ -3,9 +3,11 @@ defmodule Test.OrderSystem.ProductModel do
   use Test.OrderSystem.DataCase
   alias Ecto.Multi
 
-  alias OrderSystem.{ProductModel}
+  alias OrderSystem.{Product, ProductModel}
   @quantity 2
   @valid_attrs %{title: "A new product!", amount: 2000, quantity: @quantity}
+  @product1_id "8ea46125-3d93-4858-bd14-c0de1f1a26cb"
+  @empty_product_id "b22de4bf-b5c7-405b-81d9-aac8e901d1e0"
 
   test "create_product/1 with valid data creates a product with items" do
     multi =
@@ -31,5 +33,13 @@ defmodule Test.OrderSystem.ProductModel do
 
     assert changeset.valid? == false
     assert errors_on(changeset) == %{title: ["can't be blank"]}
+  end
+
+  test "get available quantity of a valid product id" do
+    assert 3 == ProductModel.get_quantity(%Product{id: @product1_id}, :available)
+  end
+
+  test "get available quantity of an un-found product id" do
+    assert 0 == ProductModel.get_quantity(%Product{id: @empty_product_id}, :available)
   end
 end
