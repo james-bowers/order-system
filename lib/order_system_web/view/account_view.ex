@@ -17,4 +17,15 @@ defmodule OrderSystemWeb.AccountView do
   def render({:ok, account = %Account{}}, :new_account, conn) do
     render(account, :fetch, conn)
   end
+
+  def render(result, :transfer_history, conn) do
+    conn
+    |> send_json(
+      200,
+      %View{
+        content: result,
+        description: "Transfer history for an account."
+      }
+    )
+  end
 end
