@@ -2,7 +2,7 @@ defmodule OrderSystem.PaymentController do
   alias Ecto.Multi
   alias OrderSystem.{Repo, OrderTransfer, Transfer}
 
-  def pay(%{order_id: order_id, transfer_to: _} = attrs) do
+  def pay(%{order_id: _, transfer_to: _} = attrs) do
     pay_multi(attrs)
     |> Repo.transaction()
   end
@@ -10,7 +10,7 @@ defmodule OrderSystem.PaymentController do
   def pay_multi(%{order_id: order_id, transfer_to: _} = attrs) do
     attrs.transfer_to
     |> Enum.with_index()
-    |> Enum.reduce(Ecto.Multi.new(), fn {transfer_info, index}, multi ->
+    |> Enum.reduce(Multi.new(), fn {transfer_info, index}, multi ->
       transfer_id = Ecto.UUID.generate()
 
       # TODO: use changesets here?

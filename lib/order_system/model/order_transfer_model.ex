@@ -1,5 +1,5 @@
 defmodule OrderSystem.OrderTransferModel do
-  alias OrderSystem.{Repo, OrderTransfer, TransferModel}
+  alias OrderSystem.{OrderTransfer}
   alias Ecto.Multi
 
   def create_order_transfer(
