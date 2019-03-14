@@ -18,6 +18,7 @@ account3_id = "eacb49e9-221e-488e-9e6d-a6fb529d5f4b"
 account4_id = "437d0472-4d46-4b9c-a035-b8eed120aa62"
 
 product1_id = "8ea46125-3d93-4858-bd14-c0de1f1a26cb"
+product2_id = "1fe4bc96-dca7-47cf-856c-7535a012df1d"
 
 transfer1_id = "93640c62-0485-4a32-aa19-2f71d905bea7"
 transfer2_id = "d52003be-9363-41f2-a293-8889f13cb82d"
@@ -75,6 +76,15 @@ OrderSystem.Repo.insert!(%OrderSystem.Product{
   updated_at: ~N[2019-02-22 07:01:34]
 })
 
+OrderSystem.Repo.insert!(%OrderSystem.Product{
+  amount: 3000,
+  id: product2_id,
+  inserted_at: ~N[2019-02-22 07:01:34],
+  title: "A second seed data product title",
+  updated_at: ~N[2019-02-22 07:01:34]
+})
+
+
 ######################################################
 # Product items
 
@@ -95,6 +105,12 @@ OrderSystem.Repo.insert!(%OrderSystem.Item{
   id: "fa2a9050-c988-4987-9fc4-eeeb94a42690",
   order_id: nil,
   product_id: product1_id
+})
+
+OrderSystem.Repo.insert!(%OrderSystem.Item{
+  id: "fe482321-ad68-492b-88d5-01993b31494e",
+  order_id: nil,
+  product_id: product2_id
 })
 
 ######################################################

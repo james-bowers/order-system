@@ -1,7 +1,7 @@
 defmodule OrderSystemWeb do
   # Web logic in this namespace.
 
-  def controller do
+  def router do
     quote do
       import Plug.Conn
 

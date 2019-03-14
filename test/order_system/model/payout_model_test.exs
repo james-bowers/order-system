@@ -2,29 +2,26 @@ defmodule Test.OrderSystem.PayoutModel do
   use ExUnit.Case
   use Test.OrderSystem.DataCase
 
-  alias OrderSystem.{PayoutModel, Transfer, TransferModel}
+  alias OrderSystem.{PayoutModel}
+  alias Ecto.Multi
 
-  test "logs a payout in the transfer table" do
-    account1_id = "7f68c8ee-882b-4512-bd73-a7c2147e5f77"
+  @transfer_id "7e9b4652-b932-4f13-a4f9-5e72ffc1b5ad"
 
-    valid_attrs = %{
-      amount: -5000,
-      account_id: account1_id,
-      stripe_transfer_id: "trans_12345"
-    }
+  @valid_attrs %{
+    transfer_id: @transfer_id,
+    stripe_transfer_id: "trans_12345"
+  }
 
-    {:ok, payout} = PayoutModel.create_payout(valid_attrs)
+  test "returns Multi to insert a payout" do
+    assert [
+             payout: {:insert, changeset, []}
+           ] = PayoutModel.create_payout(@valid_attrs) |> Multi.to_list()
 
-    assert {:ok, %Transfer{amount: -5000}} =
-             TransferModel.get_transfer(%Transfer{id: payout.transfer_id})
-  end
+    assert changeset.valid? == true
 
-  test "rollback failure when inserting payout" do
-    account1_id = "7f68c8ee-882b-4512-bd73-a7c2147e5f77"
-
-    invalid_attrs = %{account_id: account1_id, amount: -5000}
-
-    {:error, changeset} = PayoutModel.create_payout(invalid_attrs)
-    assert errors_on(changeset) == %{stripe_transfer_id: ["can't be blank"]}
+    assert changeset.changes == %{
+             stripe_transfer_id: "trans_12345",
+             transfer_id: "7e9b4652-b932-4f13-a4f9-5e72ffc1b5ad"
+           }
   end
 end

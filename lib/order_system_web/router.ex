@@ -2,7 +2,7 @@ defmodule OrderSystemWeb.Router do
   use Plug.Router
   use Plug.Debugger
   use Plug.ErrorHandler
-  alias OrderSystemWeb.Controller.{Account, Product}
+  alias OrderSystemWeb.{ProductRoute}
 
   plug(Plug.Logger)
   plug(OrderSystemWeb.Plug.FormatQueryString)
@@ -23,13 +23,7 @@ defmodule OrderSystemWeb.Router do
     |> send_resp(200, "OK")
   end
 
-  post("/product", do: Product.new(conn))
-
-  post("/account", do: Account.new(conn))
-  get("/account/:account_id", do: Account.fetch(conn))
-  get("/account/:account_id/balance", do: Account.fetch_balance(conn))
-  get("/account/:account_id/sold-products", do: Account.fetch_sold_products(conn))
-  get("/account/:account_id/transfer-history", do: Account.fetch_transfer_history(conn))
+  forward("/product", to: ProductRoute)
 
   get _ do
     conn

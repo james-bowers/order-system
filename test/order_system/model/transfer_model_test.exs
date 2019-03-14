@@ -3,15 +3,22 @@ defmodule Test.OrderSystem.TransferModel do
   use Test.OrderSystem.DataCase
 
   alias OrderSystem.{TransferModel, Account}
+  alias Ecto.Multi
+
+  @account3_id "eacb49e9-221e-488e-9e6d-a6fb529d5f4b"
+
+  @valid_transfer_attrs %{amount: 100, account_id: @account3_id}
+
+  test "create_transfer/1" do
+    assert [
+             transfer: {:insert, changeset, []}
+           ] = TransferModel.create_transfer(@valid_transfer_attrs) |> Multi.to_list()
+
+    assert changeset.valid? == true
+    assert changeset.changes == @valid_transfer_attrs
+  end
 
   test "get account balance" do
-    account4_id = "437d0472-4d46-4b9c-a035-b8eed120aa62"
-    Test.TransferFixture.create_transfer!(%{account_id: account4_id, amount: 2000})
-    Test.TransferFixture.create_transfer!(%{account_id: account4_id, amount: 2000})
-    Test.TransferFixture.create_transfer!(%{account_id: account4_id, amount: -500})
-    Test.TransferFixture.create_transfer!(%{account_id: account4_id, amount: 3000})
-    Test.TransferFixture.create_transfer!(%{account_id: account4_id, amount: -2000})
-
-    assert TransferModel.get_balance(%Account{id: account4_id}) == 4500
+    assert TransferModel.get_balance(%Account{id: @account3_id}) == 2000
   end
 end

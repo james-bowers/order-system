@@ -5,6 +5,12 @@ defmodule Test.OrderSystem.AccountModel do
 
   @valid_attrs %{title: "James' account"}
 
+  test "create_account/0 creates an account" do
+    assert {:ok, %Account{} = account} = AccountModel.create_account()
+    assert account.title == nil
+    assert account.stripe_account_id == nil
+  end
+
   test "create_account/1 with valid data creates an account" do
     assert {:ok, %Account{} = account} = AccountModel.create_account(@valid_attrs)
     assert account.title == "James' account"
