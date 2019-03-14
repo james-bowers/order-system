@@ -2,7 +2,7 @@ defmodule OrderSystemWeb.Router do
   use Plug.Router
   use Plug.Debugger
   use Plug.ErrorHandler
-  alias OrderSystemWeb.{ProductRoute}
+  alias OrderSystemWeb.{ProductRoute, AccountRoute}
 
   plug(Plug.Logger)
   plug(OrderSystemWeb.Plug.FormatQueryString)
@@ -23,6 +23,7 @@ defmodule OrderSystemWeb.Router do
   end
 
   forward("/product", to: ProductRoute)
+  forward("/account", to: AccountRoute)
 
   get _ do
     conn

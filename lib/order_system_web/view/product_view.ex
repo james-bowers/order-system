@@ -1,6 +1,6 @@
 defmodule OrderSystemWeb.ProductView do
   use OrderSystemWeb, :view
-  alias OrderSystemWeb.{View}
+  alias OrderSystemWeb.View
   alias OrderSystem.Product
 
   def render({:ok, %{items: quantity, product: %Product{} = product}}, :new_product, conn) do
