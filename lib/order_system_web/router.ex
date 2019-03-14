@@ -14,7 +14,6 @@ defmodule OrderSystemWeb.Router do
   )
 
   plug(:match)
-  plug(OrderSystemWeb.Plug.ValidPathId, ["account_id"])
   plug(:dispatch)
 
   get "/status" do

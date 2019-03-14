@@ -5,8 +5,13 @@ defmodule OrderSystemWeb do
     quote do
       import Plug.Conn
 
+      def format_as_struct(map, struct) do
+        struct(struct, map)
+      end
+
       def take_params(conn, params) do
-        conn.body_params
+        # TODO: String.to_atom opens memory issues, as atoms aren't garbage collected
+        conn.params
         |> Map.take(params)
         |> Map.new(fn {k, v} -> {String.to_atom(k), v} end)
       end
