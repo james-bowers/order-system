@@ -34,7 +34,9 @@ defmodule Test.OrderSystemWeb.Integration.Product do
     conn = Router.call(conn, @opts)
 
     assert conn.status == 200, conn.resp_body
-    assert conn.resp_body == ~s({"description":"Quantity of this product available for purchase.","content":3})
+
+    assert conn.resp_body ==
+             ~s({"description":"Quantity of this product available for purchase.","content":3})
   end
 
   test "/product/:product_id/available with invalid product_id" do
