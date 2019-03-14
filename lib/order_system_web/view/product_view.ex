@@ -11,6 +11,14 @@ defmodule OrderSystemWeb.ProductView do
     })
   end
 
+  def render(quantity, :available, conn) do
+    conn
+    |> send_json(200, %View{
+      content: quantity,
+      description: "Quantity of this product available for purchase."
+    })
+  end
+
   def render({:error, action, changeset, _}, :new_product, conn) do
     conn
     |> send_json(400, %View{
