@@ -12,18 +12,33 @@ defmodule OrderSystem.OrderModel do
   end
 
   def reserve_items(order) do
-    Enum.reduce(order.items, Multi.new(), fn item, multi ->
+    order.items
+    |> Enum.with_index()
+    |> Enum.reduce(Multi.new(), fn {item, index}, multi ->
       query = reserve_item_query(item)
 
+      reserve_item_key = reserve_item_key(index)
+      validate_quantity_key = validate_quantity_key(index)
+
       multi
-      |> Multi.update_all(:reserve_items, query, set: [order_id: order.id])
-      |> Multi.run(:validate_quantity, fn _repo, changes ->
-        validate_reserved_item_quantity(changes, item)
+      |> Multi.update_all(reserve_item_key, query, set: [order_id: order.id])
+      |> Multi.run(validate_quantity_key, fn _repo, changes ->
+        {updated_records_count, _} = Map.get(changes, reserve_item_key)
+
+        validate_reserved_item_quantity(updated_records_count, item)
       end)
     end)
   end
 
-  defp validate_reserved_item_quantity(%{reserve_items: {updated_records_count, _}}, item) do
+  defp reserve_item_key(index) do
+    "reserve_item_#{index}"
+  end
+
+  defp validate_quantity_key(index) do
+    "validate_quantity_#{index}"
+  end
+
+  defp validate_reserved_item_quantity(updated_records_count, item) do
     case updated_records_count == item.quantity do
       true -> {:ok, updated_records_count}
       false -> {:error, :insufficient_quantity}

@@ -28,22 +28,29 @@ defmodule Test.OrderSystem.OrderModel do
   end
 
   test "creates multi for reserving items in order" do
-    order = Map.put(@order, :id, "5358da8e-4ff4-45b7-b2d5-7ddbcfaaed09")
+    order_id = "5358da8e-4ff4-45b7-b2d5-7ddbcfaaed09"
+    order = Map.put(@order, :id, order_id)
 
     assert [
-             reserve_items:
-               {:update_all, query, [set: [order_id: "5358da8e-4ff4-45b7-b2d5-7ddbcfaaed09"]], []},
-             validate_quantity: {:run, _func}
+             {"reserve_item_0",
+              {:update_all, prod1_update_query, [set: [order_id: order_id]], []}},
+             {"validate_quantity_0", {:run, _reserve_items_func}},
+             {"reserve_item_1",
+              {:update_all, prod2_update_query, [set: [order_id: order_id]], []}},
+             {"validate_quantity_1", {:run, _validate_qty_func}}
            ] = OrderModel.reserve_items(order) |> Multi.to_list()
 
-    assert inspect(query) |> String.contains?("limit: ^4")
+    assert inspect(prod1_update_query) |> String.contains?("limit: ^4")
+    assert inspect(prod2_update_query) |> String.contains?("limit: ^1")
 
-    assert inspect(query)
-           |> String.contains?(
-             ~s(where: i0.product_id == ^"8ea46125-3d93-4858-bd14-c0de1f1a26cb")
-           )
+    assert inspect(prod1_update_query)
+           |> String.contains?(~s(where: i0.product_id == ^"#{@product1_id}"))
 
-    assert inspect(query) |> String.contains?(~s(select: %{id: i0.id}))
+    assert inspect(prod2_update_query)
+           |> String.contains?(~s(where: i0.product_id == ^"#{@product2_id}"))
+
+    assert inspect(prod1_update_query) |> String.contains?(~s(select: %{id: i0.id}))
+    assert inspect(prod2_update_query) |> String.contains?(~s(select: %{id: i0.id}))
   end
 
   test "get items in an order" do

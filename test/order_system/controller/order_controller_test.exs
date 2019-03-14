@@ -1,7 +1,7 @@
 defmodule Test.OrderSystem.OrderController do
   use Test.OrderSystem.DataCase
 
-  alias OrderSystem.{Product, ProductModel, OrderController}
+  alias OrderSystem.{Product, Order, OrderModel, ProductModel, OrderController}
 
   @product1_id "8ea46125-3d93-4858-bd14-c0de1f1a26cb"
 
@@ -17,8 +17,9 @@ defmodule Test.OrderSystem.OrderController do
 
     assert {:ok,
             %{
-              order: order,
-              reserve_items: {2, nil}
+              :order => order,
+              "validate_quantity_0" => 2,
+              "reserve_item_0" => {2, nil}
             }} = OrderController.create_order(order)
 
     assert 1 == ProductModel.get_quantity(%Product{id: @product1_id}, :available)
@@ -34,12 +35,14 @@ defmodule Test.OrderSystem.OrderController do
       ]
     }
 
-    assert {:error, :validate_quantity, :insufficient_quantity,
+    assert {:error, "validate_quantity_0", :insufficient_quantity,
             %{
-              order: order,
-              reserve_items: {3, nil}
+              :order => order,
+              "reserve_item_0" => {3, nil}
             }} = OrderController.create_order(order)
 
     assert 3 == ProductModel.get_quantity(%Product{id: @product1_id}, :available)
+
+    assert [] == OrderModel.retrieve_order(%Order{id: order.id})
   end
 end
