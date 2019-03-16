@@ -23,10 +23,10 @@ defmodule OrderSystemWeb.Plug.FormatQueryString do
   end
 
   defp format_key_pair({key, value}) when key in @integer_option_keys do
-    {String.to_atom(key), String.to_integer(value)}
+    {String.to_existing_atom(key), String.to_integer(value)}
   end
 
   defp format_key_pair({key, value}) do
-    {String.to_atom(key), value}
+    {String.to_existing_atom(key), value}
   end
 end

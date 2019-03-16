@@ -10,10 +10,9 @@ defmodule OrderSystemWeb do
       end
 
       def take_params(conn, params) do
-        # TODO: String.to_atom opens memory issues, as atoms aren't garbage collected
         conn.params
         |> Map.take(params)
-        |> Map.new(fn {k, v} -> {String.to_atom(k), v} end)
+        |> Map.new(fn {k, v} -> {String.to_existing_atom(k), v} end)
       end
     end
   end
