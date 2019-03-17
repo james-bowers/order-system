@@ -59,7 +59,7 @@ defmodule Test.OrderSystemWeb.Integration.Account do
 
       assert conn.status == 400, conn.resp_body
     end
-        
+
     test "account balance for non existent account" do
       conn = conn(:get, "/account/e308f1f4-f66d-4c60-a7c3-669596797cba/balance")
       conn = Router.call(conn, @opts)
