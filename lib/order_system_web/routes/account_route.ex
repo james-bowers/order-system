@@ -1,7 +1,7 @@
 defmodule OrderSystemWeb.AccountRoute do
   use OrderSystemWeb, :router
   use Plug.Router
-  alias OrderSystem.{Account, AccountModel}
+  alias OrderSystem.{Account, AccountModel, TransferModel}
   alias OrderSystemWeb.AccountView
 
   plug(:match)
@@ -15,6 +15,14 @@ defmodule OrderSystemWeb.AccountRoute do
     |> take_params(@params)
     |> AccountModel.create_account()
     |> AccountView.render(:new_account, conn)
+  end
+
+  get "/:id/balance" do
+    conn
+    |> take_params(["id"])
+    |> format_as_struct(Account)
+    |> TransferModel.get_balance()
+    |> AccountView.render(:account_balance, conn)
   end
 
   get "/:id/transfers" do

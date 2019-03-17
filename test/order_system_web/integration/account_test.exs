@@ -44,6 +44,29 @@ defmodule Test.OrderSystemWeb.Integration.Account do
       assert conn.status == 200, conn.resp_body
       assert conn.resp_body == ~s({"description":"Transfer history for an account.","content":[]})
     end
+    
+    test "returns account balance" do
+      conn = conn(:get, "/account/#{@account3_id}/balance")
+      conn = Router.call(conn, @opts)
+
+      assert conn.status == 200, conn.resp_body
+      assert conn.resp_body == ~s({"description":"The account's current balance.","content":2000})
+    end
+
+    test "account balance for an invalid account id" do
+      conn = conn(:get, "/account/foo/balance")
+      conn = Router.call(conn, @opts)
+
+      assert conn.status == 400, conn.resp_body
+    end
+        
+    test "account balance for non existent account" do
+      conn = conn(:get, "/account/e308f1f4-f66d-4c60-a7c3-669596797cba/balance")
+      conn = Router.call(conn, @opts)
+
+      assert conn.status == 404, conn.resp_body
+      assert conn.resp_body == ~s({"description":"The account could not be found.","content":null})
+    end
 
     test "returns account's transfer history" do
       conn = conn(:get, "/account/#{@account3_id}/transfers")

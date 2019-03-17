@@ -2,6 +2,28 @@ defmodule OrderSystemWeb.AccountView do
   use OrderSystemWeb, :view
   alias OrderSystem.Account
   alias OrderSystemWeb.View
+  
+  def render(nil, :account_balance, conn) do
+    conn
+    |> send_json(
+      404,
+      %View{
+        content: nil,
+        description: "The account could not be found."
+      }
+    )
+  end
+
+  def render(balance, :account_balance, conn) do
+    conn
+    |> send_json(
+      200,
+      %View{
+        content: balance,
+        description: "The account's current balance."
+      }
+    )
+  end
 
   def render(account = %Account{}, :fetch, conn) do
     conn
