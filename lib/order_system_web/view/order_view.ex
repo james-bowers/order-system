@@ -3,6 +3,28 @@ defmodule OrderSystemWeb.OrderView do
   alias OrderSystem.Order
   alias OrderSystemWeb.View
 
+  def render([], :retrieve, conn) do
+    conn
+    |> send_json(
+      404,
+      %View{
+        content: nil,
+        description: "No order with that ID was found."
+      }
+    )
+  end
+
+  def render(order_items, :retrieve, conn) do
+    conn
+    |> send_json(
+      200,
+      %View{
+        content: order_items,
+        description: "Items in the requested order."
+      }
+    )
+  end
+
   def render({:ok, %{order: order = %Order{}}}, :new_order, conn) do
     conn
     |> send_json(

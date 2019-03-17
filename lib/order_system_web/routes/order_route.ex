@@ -2,13 +2,22 @@ defmodule OrderSystemWeb.OrderRoute do
   use OrderSystemWeb, :router
   use Plug.Router
 
-  alias OrderSystem.OrderController
+  alias OrderSystem.{Order, OrderModel, OrderController}
   alias OrderSystemWeb.OrderView
 
   plug(:match)
+  plug(OrderSystemWeb.Plug.ValidPathId, ["id"])
   plug(:dispatch)
 
   @params ["items"]
+
+  get "/:id" do
+    conn
+    |> take_params(["id"])
+    |> format_as_struct(Order)
+    |> OrderModel.retrieve_order()
+    |> OrderView.render(:retrieve, conn)
+  end
 
   post "/" do
     conn
