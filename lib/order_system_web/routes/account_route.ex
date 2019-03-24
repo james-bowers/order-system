@@ -8,7 +8,7 @@ defmodule OrderSystemWeb.AccountRoute do
   plug(OrderSystemWeb.Plug.ValidPathId, ["id"])
   plug(:dispatch)
 
-  @params ["title"]
+  @params ["id", "title"]
 
   post "/" do
     conn

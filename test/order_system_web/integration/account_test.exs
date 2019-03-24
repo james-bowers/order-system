@@ -6,8 +6,9 @@ defmodule Test.OrderSystemWeb.Integration.Account do
 
   @opts Router.init([])
 
-  @valid_attrs %{title: "Account title"}
   @account3_id "eacb49e9-221e-488e-9e6d-a6fb529d5f4b"
+  @valid_new_account_id "b6c8aae4-035d-4eb3-b425-32e142cf0d41"
+  @valid_attrs %{title: "Account title", id: @valid_new_account_id}
 
   describe "creates an account" do
     test "/account returns 200 with provided account title" do
@@ -23,7 +24,7 @@ defmodule Test.OrderSystemWeb.Integration.Account do
     end
 
     test "/account anonymous account" do
-      conn = conn(:post, "/account", %{})
+      conn = conn(:post, "/account", %{id: @valid_new_account_id})
       conn = Router.call(conn, @opts)
 
       assert conn.status == 200, conn.resp_body
@@ -31,6 +32,18 @@ defmodule Test.OrderSystemWeb.Integration.Account do
       assert String.contains?(
                conn.resp_body,
                ~s({"description":"A new account has been created.","content":{"title":null,"id":)
+             )
+    end
+
+    test "/account without id returns 400" do
+      conn = conn(:post, "/account", %{})
+      conn = Router.call(conn, @opts)
+
+      assert conn.status == 400, conn.resp_body
+
+      assert String.contains?(
+               conn.resp_body,
+               ~s({"description":"An account ID must be provided.","content":null)
              )
     end
   end

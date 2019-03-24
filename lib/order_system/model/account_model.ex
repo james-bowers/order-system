@@ -10,10 +10,14 @@ defmodule OrderSystem.AccountModel do
     end
   end
 
-  def create_account(attrs \\ %{}) do
+  def create_account(attrs = %{id: _id}) do
     %Account{}
     |> Account.changeset(attrs)
     |> Repo.insert()
+  end
+
+  def create_account(attrs) do
+    {:error, :no_account_id_provided}
   end
 
   def transfer_history(%Account{} = account, options \\ []) do

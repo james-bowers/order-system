@@ -2,16 +2,16 @@ defmodule Test.OrderSystem.AccountModel do
   use Test.OrderSystem.DataCase
 
   alias OrderSystem.{Account, AccountModel}
+  @valid_new_account_id "b6c8aae4-035d-4eb3-b425-32e142cf0d41"
+  @valid_attrs %{id: @valid_new_account_id, title: "James' account"}
 
-  @valid_attrs %{title: "James' account"}
-
-  test "create_account/0 creates an account" do
-    assert {:ok, %Account{} = account} = AccountModel.create_account()
+  test "create_account/1 creates an account" do
+    assert {:ok, %Account{} = account} = AccountModel.create_account(%{id: @valid_new_account_id})
     assert account.title == nil
     assert account.stripe_account_id == nil
   end
 
-  test "create_account/1 with valid data creates an account" do
+  test "create_account/1 with valid data creates an account with title" do
     assert {:ok, %Account{} = account} = AccountModel.create_account(@valid_attrs)
     assert account.title == "James' account"
     assert account.stripe_account_id == nil

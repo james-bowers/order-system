@@ -36,6 +36,18 @@ defmodule OrderSystemWeb.AccountView do
     )
   end
 
+
+  def render({:error, :no_account_id_provided}, :new_account, conn) do
+    conn
+    |> send_json(
+      400,
+      %View{
+        content: nil,
+        description: "An account ID must be provided."
+      }
+    )
+  end
+
   def render({:ok, account = %Account{}}, :new_account, conn) do
     render(account, :fetch, conn)
   end
