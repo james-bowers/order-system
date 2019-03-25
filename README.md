@@ -4,7 +4,6 @@ Manages inventory, and financial accounts.
 
 ## Tests:
 
-With docker & postgres: `docker-compose run test`
 Without docker (relies on local postgres running): `mix test`
 
 ## Routes (work in progress)

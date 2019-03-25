@@ -1,5 +1,5 @@
 FROM elixir
-MAINTAINER james@ticketbuddy.co.uk
+MAINTAINER james@bowers.dev
 RUN mix local.hex --force
 
 WORKDIR /app

@@ -5,7 +5,7 @@ config :logger, level: :warn
 config :order_system, OrderSystem.Repo,
   database: "order_system_repo",
   username: "postgres",
-  password: "pass",
-  # change hostname to db, when github actions supports `docker-compose run test`
+  password: "pass",  
   hostname: "localhost",
-  pool: Ecto.Adapters.SQL.Sandbox
+  pool: Ecto.Adapters.SQL.Sandbox,
+  port: "5432"
