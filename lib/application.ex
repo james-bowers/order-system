@@ -9,7 +9,7 @@ defmodule OrderSystem.Application do
       Plug.Adapters.Cowboy.child_spec(
         scheme: :http,
         plug: OrderSystemWeb.Router,
-        options: [port: 8084, protocol_options: [max_keepalive: 5_000_000]]
+        options: [port: 3084, protocol_options: [max_keepalive: 5_000_000]]
       )
     ]
 
