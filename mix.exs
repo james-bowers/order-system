@@ -31,7 +31,8 @@ defmodule OrderSystem.MixProject do
       {:plug_cowboy, "~> 2.0"},
       {:ecto_sql, "~> 3.0"},
       {:postgrex, ">= 0.0.0"},
-      {:poison, "~> 3.1"}
+      {:poison, "~> 3.1"},
+      {:bowers_lib, path: "../bowers-lib"}
     ]
   end
 

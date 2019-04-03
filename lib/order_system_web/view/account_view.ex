@@ -2,7 +2,7 @@ defmodule OrderSystemWeb.AccountView do
   use OrderSystemWeb, :view
   alias OrderSystem.Account
   alias OrderSystemWeb.View
-  
+
   def render(nil, :account_balance, conn) do
     conn
     |> send_json(
@@ -35,7 +35,6 @@ defmodule OrderSystemWeb.AccountView do
       }
     )
   end
-
 
   def render({:error, :no_account_id_provided}, :new_account, conn) do
     conn
