@@ -88,9 +88,9 @@ defmodule Test.OrderSystemWeb.Integration.Account do
       assert {400, body, _headers} = get("/account/foo/transfers")
 
       assert %{
-        "description" => "An invalid ID was provided.",
-        "content" => nil
-      } = body
+               "description" => "An invalid ID was provided.",
+               "content" => nil
+             } = body
     end
   end
 end

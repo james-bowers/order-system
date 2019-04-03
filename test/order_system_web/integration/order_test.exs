@@ -1,10 +1,6 @@
 defmodule Test.OrderSystemWeb.Integration.Order do
   use Test.OrderSystem.DataCase
-  use Plug.Test
-
-  alias OrderSystemWeb.Router
-
-  @opts Router.init([])
+  use BowersLib.TestSupport.HTTP, OrderSystemWeb.Router
 
   @order1_id "b03f40b3-5aa8-40f4-92c0-e0bf9d723c3c"
 
@@ -39,56 +35,63 @@ defmodule Test.OrderSystemWeb.Integration.Order do
 
   describe "successful" do
     test "/order" do
-      conn = conn(:post, "/order", @valid_body)
-      conn = Router.call(conn, @opts)
+      assert {200, body, _headers} = post("/order", @valid_body)
 
-      assert conn.status == 200, conn.resp_body
-      assert String.contains?(conn.resp_body, ~s("id":))
-
-      assert String.contains?(
-               conn.resp_body,
-               ~s("description":"A new order has been registered.")
-             )
+      assert %{
+               "description" => "A new order has been registered.",
+               "content" => %{
+                 "id" => _order_id
+               }
+             } = body
     end
   end
 
   describe "unsuccessful" do
     test "/order" do
-      conn = conn(:post, "/order", @exceed_qty_body)
-      conn = Router.call(conn, @opts)
+      assert {400, body, _headers} = post("/order", @exceed_qty_body)
 
-      assert conn.status == 400, conn.resp_body
-
-      assert String.contains?(
-               conn.resp_body,
-               ~s("description":"There are not enough available items to process your request.")
-             )
+      assert %{
+               "description" => "There are not enough available items to process your request.",
+               "content" => nil
+             } = body
     end
   end
 
   test "fetch an order" do
-    conn = conn(:get, "/order/#{@order1_id}")
-    conn = Router.call(conn, @opts)
+    assert {200, body, _headers} = get("/order/#{@order1_id}")
 
-    assert conn.status == 200, conn.resp_body
-
-    assert conn.resp_body ==
-             ~s({"description":"Items in the requested order.","content":[{"title":"A seed data product title","item_id":"b4c0fb72-e4b0-47fb-958f-20c0a831a2dc","amount":3000},{"title":"A seed data product title","item_id":"9c3be15f-5051-416d-a503-1fddf9bff65c","amount":3000}]})
+    assert %{
+             "description" => "Items in the requested order.",
+             "content" => [
+               %{
+                 "title" => "A seed data product title",
+                 "item_id" => "b4c0fb72-e4b0-47fb-958f-20c0a831a2dc",
+                 "amount" => 3000
+               },
+               %{
+                 "title" => "A seed data product title",
+                 "item_id" => "9c3be15f-5051-416d-a503-1fddf9bff65c",
+                 "amount" => 3000
+               }
+             ]
+           } = body
   end
 
   test "fetch an order - with invalid id" do
-    conn = conn(:get, "/order/foo")
-    conn = Router.call(conn, @opts)
+    assert {400, body, _headers} = get("/order/foo")
 
-    assert conn.status == 400, conn.resp_body
-    assert conn.resp_body == ~s({"description":"An invalid ID was provided.","content":null})
+    assert %{
+             "description" => "An invalid ID was provided.",
+             "content" => nil
+           } = body
   end
 
   test "fetch an order - with unknown id" do
-    conn = conn(:get, "/order/5f6b2512-5926-4437-8d0a-ea0f96ff838e")
-    conn = Router.call(conn, @opts)
+    assert {404, body, _headers} = get("/order/5f6b2512-5926-4437-8d0a-ea0f96ff838e")
 
-    assert conn.status == 404, conn.resp_body
-    assert conn.resp_body == ~s({"description":"No order with that ID was found.","content":null})
+    assert %{
+             "description" => "No order with that ID was found.",
+             "content" => nil
+           } = body
   end
 end
