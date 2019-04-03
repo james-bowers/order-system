@@ -1,10 +1,6 @@
 defmodule Test.OrderSystemWeb.Integration.Payment do
   use Test.OrderSystem.DataCase
-  use Plug.Test
-
-  alias OrderSystemWeb.Router
-
-  @opts Router.init([])
+  use BowersLib.TestSupport.HTTP, OrderSystemWeb.Router
 
   @order1_id "b03f40b3-5aa8-40f4-92c0-e0bf9d723c3c"
   @account1_id "7f68c8ee-882b-4512-bd73-a7c2147e5f77"
@@ -26,11 +22,12 @@ defmodule Test.OrderSystemWeb.Integration.Payment do
 
   describe "success" do
     test "pays for an order" do
-      conn = conn(:post, "/pay", @valid_body)
-      conn = Router.call(conn, @opts)
+      assert {200, body, _headers} = post("/pay", @valid_body)
 
-      assert conn.status == 200, conn.resp_body
-      assert String.contains?(conn.resp_body, ~s("description":"Order payment completed."))
+      assert %{
+               "description" => "Order payment completed.",
+               "content" => nil
+             } = body
     end
   end
 
@@ -51,17 +48,9 @@ defmodule Test.OrderSystemWeb.Integration.Payment do
     |> Enum.each(fn {invalid_body, index} ->
       @invalid_body invalid_body
       test "invalid payment body test #{index}" do
-        conn = conn(:post, "/pay", @invalid_body)
-
         assert_raise(Ecto.ChangeError, fn ->
-          Router.call(conn, @opts)
+          post("/pay", @invalid_body)
         end)
-
-        assert {
-                 400,
-                 _headers,
-                 ~s({"description":"An invalid ID was provided.","content":null})
-               } = sent_resp(conn)
       end
     end)
   end
