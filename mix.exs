@@ -32,7 +32,8 @@ defmodule OrderSystem.MixProject do
       {:ecto_sql, "~> 3.0"},
       {:postgrex, ">= 0.0.0"},
       {:poison, "~> 3.1"},
-      {:bowers_lib, path: "../bowers-lib"}
+      # {:bowers_lib, path: "../bowers-lib"}
+      {:bowers_lib, git: "https://github.com/james-bowers/bowers-lib.git"}
     ]
   end
 
